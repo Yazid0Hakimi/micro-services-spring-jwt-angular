@@ -1,3 +1,9 @@
+# application.yml
+service:
+  authServiceUrl: http://localhost:8082
+  customerServiceUrl: http://localhost:8081
+  authJwtServiceUrl: http://localhost:8086
+
 spring:
   cloud:
     gateway:
@@ -14,30 +20,74 @@ spring:
             exposed-headers: "*"
       routes:
         - id: r0
-          uri: http://localhost:8082
+          uri: ${service.authServiceUrl}  # Referencing the auth service URL
           predicates:
             - Path= /auth-service/*
           filters:
-            #- RedirectTo=302, http://localhost:8082/login
             - StripPrefix=1
             - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
-        - id : r2
-          uri: http://localhost:8082
+        - id: r2
+          uri: ${service.authServiceUrl}  # Referencing the auth service URL for myData
           predicates:
             - Path= /auth-service/myData
           filters:
             - StripPrefix=1
         - id: r3
-          uri: http://localhost:8081
+          uri: ${service.customerServiceUrl}  # Referencing the customer service URL
           predicates:
             - Path= /customer-service/**
           filters:
             - StripPrefix=1
             - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
         - id: r4
-          uri: http://localhost:8086
+          uri: ${service.authJwtServiceUrl}  # Referencing the auth JWT service URL
           predicates:
             - Path= /auth-jwt-service/**
           filters:
             - StripPrefix=1
             - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+
+
+#spring:
+#  cloud:
+#    gateway:
+#      globalcors:
+#        cors-configurations:
+#          '[/**]':
+#            allowedOrigins: "*"
+#            allowedMethods:
+#              - GET
+#              - POST
+#              - PUT
+#              - DELETE
+#            allowed-headers: "*"
+#            exposed-headers: "*"
+#      routes:
+#        - id: r0
+#          uri: http://localhost:8082
+#          predicates:
+#            - Path= /auth-service/*
+#          filters:
+#            #- RedirectTo=302, http://localhost:8082/login
+#            - StripPrefix=1
+#            - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+#        - id : r2
+#          uri: http://localhost:8082
+#          predicates:
+#            - Path= /auth-service/myData
+#          filters:
+#            - StripPrefix=1
+#        - id: r3
+#          uri: http://localhost:8081
+#          predicates:
+#            - Path= /customer-service/**
+#          filters:
+#            - StripPrefix=1
+#            - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+#        - id: r4
+#          uri: http://localhost:8086
+#          predicates:
+#            - Path= /auth-jwt-service/**
+#          filters:
+#            - StripPrefix=1
+#            - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin

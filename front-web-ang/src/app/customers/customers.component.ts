@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
+import {environment} from "../environment/environment";
 
 @Component({
   selector: 'app-customers',
@@ -15,7 +16,7 @@ export class CustomersComponent implements OnInit{
  }
 
   getCustomers(){
-    this.http.get("http://localhost:8888/customer-service/customers")
+    this.http.get(`${environment.apiUrl}/customer-service/customers`)
       .subscribe({
         next : value => {
           this.customers=value;
@@ -24,7 +25,7 @@ export class CustomersComponent implements OnInit{
   }
 
   deleteCustomer(c: any) {
-    this.http.delete("http://localhost:8888/customer-service/customers/"+c.id)
+    this.http.delete(`${environment.apiUrl}/customer-service/customers/`+c.id)
       .subscribe({
         next : value => {
           this.getCustomers();

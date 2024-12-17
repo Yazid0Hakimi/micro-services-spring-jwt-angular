@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
+import {environment} from "../environment/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class AuthService {
       .set('username', username)
       .set('password', password);
 
-    return this.http.post('http://localhost:8888/auth-jwt-service/auth',
+    return this.http.post(`${environment.apiUrl}/auth-jwt-service/auth`,
       body.toString(),
       {
         headers: new HttpHeaders()
@@ -25,7 +26,7 @@ export class AuthService {
     );
   }
   loadProfile() {
-    return this.http.get("http://localhost:8888/auth-jwt-service/profile");
+    return this.http.get(`${environment.apiUrl}/auth-jwt-service/profile`);
   }
 
   logout() {

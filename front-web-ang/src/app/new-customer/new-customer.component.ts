@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 import {dateTimestampProvider} from "rxjs/internal/scheduler/dateTimestampProvider";
-
+import {environment} from "../environment/environment";
 @Component({
   selector: 'app-new-customer',
   templateUrl: './new-customer.component.html',
@@ -21,7 +21,7 @@ export class NewCustomerComponent implements OnInit {
 
   handleSaveCustomer() {
     let customer = this.formGroup.value;
-    this.http.post("http://localhost:8888/customer-service/customers", customer)
+    this.http.post(`${environment.apiUrl}/customer-service/customers`, customer)
       .subscribe({
         next : (data)=>{
           alert("Success => "+JSON.stringify(data));
